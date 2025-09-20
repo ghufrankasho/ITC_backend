@@ -14,6 +14,7 @@ class Subcategory extends Model
         'category_id'
     ];
     
+    
     public $timestamps=true;
 
     
