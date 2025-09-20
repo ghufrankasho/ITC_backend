@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('seo_name')->default('product seo_name')->nullable();
             $table->string('seo_description')->default('product description')->nullable();
             
+            $table->foreignId('subgategory_id')->constrained()->on('subcategories');
             $table->timestamps();
         });
     }
