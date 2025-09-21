@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Http\Middleware\JwtMiddleware;
+use Illuminate\Support\Facades\Auth; 
 class AuthController extends Controller
 {
 
@@ -75,16 +75,24 @@ class AuthController extends Controller
     // Logout
     public function logout()
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
-
+        
+        if(JWTAuth::user())
+      { $t= JWTAuth::invalidate(JWTAuth::getToken());
+ 
         return response()->json([
             'status'  => true,
             'message' => 'Logged out successfully'
+        ]);}
+        else{
+            return response()->json([
+            'status'  => false,
+            'message' => 'You laready Logged out !!!'
         ]);
+        }
     }
 
     // Get current user
-    public function profile()
+    public function me()
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
@@ -94,21 +102,17 @@ class AuthController extends Controller
         }
     }
 
-    // Refresh token
     public function refresh()
     {
-        try {
-            
-             $user = JWTAuth::user();
-            $token = JWTAuth::refresh(JWTAuth::getToken());
-            
-            
-            
-            
-            return $this->createNewToken($token, $user);
-        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return response()->json(['status' => false, 'message' => 'Token error: '.$e->getMessage()], 401);
-        }
+        return $this->respondWithToken(Auth::guard('api')->refresh());
+    }
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,
+        ]);
     }
 
     // Reset password
