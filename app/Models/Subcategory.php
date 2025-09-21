@@ -9,7 +9,7 @@ class Subcategory extends Model
     protected $fillable=[
         'name',
         'seo_name',
-        'describtion',
+        'description',
         'seo_description',
         'category_id'
     ];

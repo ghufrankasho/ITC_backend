@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    
+    protected $foriegnkey='subcategory_id';
     public function subcategory(){
 
         return $this->belongsTo(Subcategory::class,'subcategory_id','id');

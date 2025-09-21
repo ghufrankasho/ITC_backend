@@ -63,24 +63,24 @@ class CategoryController extends Controller
 
             return response()->json(null, 204);
         }
-     public function update(Request $request, Category $category)
-    {
-       
-        $validated =Validator::make($request->all(), 
-            [ 'name' => 'sometimes|string|max:255',
-                'description' => 'nullable|string',
-                'seo_name' => 'nullable|string|max:255',
-                'seo_description' => 'nullable|string',
-            ]);
-            if ($validated->fails()) {
-                return response()->json([
-                    'status'  => false,
-                    'message' => 'Validation Error',
-                    'errors'  => $validated->errors()
-                ], 422);
-            }
-        $category->update($validated->validated());
+    public function update(Request $request, Category $category)
+        {
+        
+            $validated =Validator::make($request->all(), 
+                [ 'name' => 'sometimes|string|max:255',
+                    'description' => 'nullable|string',
+                    'seo_name' => 'nullable|string|max:255',
+                    'seo_description' => 'nullable|string',
+                ]);
+                if ($validated->fails()) {
+                    return response()->json([
+                        'status'  => false,
+                        'message' => 'Validation Error',
+                        'errors'  => $validated->errors()
+                    ], 422);
+                }
+            $category->update($validated->validated());
 
-        return new CategoryResource($category);
-    }
+            return new CategoryResource($category);
+        }
 }
