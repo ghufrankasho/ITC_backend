@@ -10,7 +10,7 @@ class Category extends Model
     protected $fillable=[
         'name',
         'seo_name',
-        'describtion',
+        'description',
         'seo_description'
     ];
     

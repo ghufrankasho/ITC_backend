@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Resources\CategoryResource;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+
 
 class CategoryController extends Controller
 {
@@ -11,54 +16,71 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        try{
+            return CategoryResource::collection(Category::all());
+        }
+        catch (ValidationException $e) {
+              return response()->json(['errors' => $e->errors()], 422);
+          } catch (\Exception $e) {
+              return response()->json(['message' => 'An error occurred while obtaining this categroy.'], 500);
+          } 
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
-        //
-    }
+        {
+        
+            $validated =Validator::make($request->all(), 
+            [ 'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'seo_name' => 'nullable|string|max:255',
+                'seo_description' => 'nullable|string',
+            ]);
+            if ($validated->fails()) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Validation Error',
+                    'errors'  => $validated->errors()
+                ], 422);
+            }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+            $category = Category::create($validated->validated());
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            return new CategoryResource($category);
+        
+        }
+    public function show(Category $category)
+        {
+            return new CategoryResource($category);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Category $category)
+        {
+            $category->delete();
+
+            return response()->json(null, 204);
+        }
+     public function update(Request $request, Category $category)
     {
-        //
+       
+        $validated =Validator::make($request->all(), 
+            [ 'name' => 'sometimes|string|max:255',
+                'description' => 'nullable|string',
+                'seo_name' => 'nullable|string|max:255',
+                'seo_description' => 'nullable|string',
+            ]);
+            if ($validated->fails()) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Validation Error',
+                    'errors'  => $validated->errors()
+                ], 422);
+            }
+        $category->update($validated->validated());
+
+        return new CategoryResource($category);
     }
 }
