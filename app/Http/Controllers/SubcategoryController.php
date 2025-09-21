@@ -20,10 +20,10 @@ class SubcategoryController extends Controller
 
   
 
-    /**
+     /**
      * Store a newly created resource in storage.
      */
-   public function store(Request $request)
+    public function store(Request $request)
         {
         
             $validated =Validator::make($request->all(), 
@@ -50,58 +50,57 @@ class SubcategoryController extends Controller
         }
    
 
-    /**
+     /**
      * Display the specified resource.
      */
     public function show(Subcategory $subcategory)
-    {
-         return new SubcategoryResource($subcategory);
-    }
+        {
+            return new SubcategoryResource($subcategory);
+        }
 
-    /**
+     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-        //
-    }
+        {
+            //
+        }
 
-    /**
+     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Subcategory $subcategory)
-    {
-       
-         $validated =Validator::make($request->all(), 
-            [ 
-                'name' => 'sometimes|string|max:255',
-                'description' => 'nullable|string',
-                'seo_name' => 'nullable|string|max:255',
-                'seo_description' => 'nullable|string',
-                'category_id'=>'sometimes|integer|exists:categories,id'
-            ]);
-            if ($validated->fails()) {
-                return response()->json([
-                    'status'  => false,
-                    'message' => 'Validation Error',
-                    'errors'  => $validated->errors()
-                ], 422);
-            }
-
-
-            $subcategory->update($validated->validated());
-
-            return new SubcategoryResource($subcategory);
+        {
         
-    }
+            $validated =Validator::make($request->all(), 
+                [ 
+                    'name' => 'sometimes|string|max:255',
+                    'description' => 'nullable|string',
+                    'seo_name' => 'nullable|string|max:255',
+                    'seo_description' => 'nullable|string',
+                    'category_id'=>'sometimes|integer|exists:categories,id'
+                ]);
+                if ($validated->fails()) {
+                    return response()->json([
+                        'status'  => false,
+                        'message' => 'Validation Error',
+                        'errors'  => $validated->errors()
+                    ], 422);
+                }
 
-    /**
+
+                $subcategory->update($validated->validated());
+
+                return new SubcategoryResource($subcategory);
+            
+        }
+
+     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Subcategory $subcategory)
         {
-            $products=$subcategory->products()->get();
-            return  $products;
+             
             $subcategory->delete();
 
             return response()->json(null, 204);
