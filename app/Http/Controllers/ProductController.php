@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
       try{
@@ -21,14 +19,10 @@ class ProductController extends Controller
         catch (ValidationException $e) {
               return response()->json(['errors' => $e->errors()], 422);
           } catch (\Exception $e) {
-              return response()->json(['message' => 'An error occurred while obtaining this categroy.'], 500);
+              return response()->json(['message' => 'An error occurred while obtaining this data.'], 500);
           } 
     }
  
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
             $validated =Validator::make($request->all(), 
@@ -66,9 +60,6 @@ class ProductController extends Controller
             return new ProductResource($product);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Product $product)
     {
         try{
@@ -77,14 +68,10 @@ class ProductController extends Controller
         catch (ValidationException $e) {
               return response()->json(['errors' => $e->errors()], 422);
           } catch (\Exception $e) {
-              return response()->json(['message' => 'An error occurred while obtaining this categroy.'], 500);
+              return response()->json(['message' => 'An error occurred while obtaining this data.'], 500);
           } 
     }
 
-    
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Product $product)
     {
         $validated =Validator::make($request->all(), 
@@ -111,24 +98,33 @@ class ProductController extends Controller
 
      
             $product->update($validated->validated());  
-            if($request->hasFile('image') and $request->file('image')->isValid()){
-                $product->image = $this->storeImage($request->file('image'),'images'); 
-            }
-            if($request->hasFile('file') and $request->file('file')->isValid()){
-                $product->file = $this->storeImage($request->file('file'),'files'); 
-            }
+              if($request->hasFile('image') and $request->file('image')->isValid()){
+                    if($product->image !=null){
+                        $this->deleteImage($product->image);
+                    }
+                    $product->image = $this->storeImage($request->file('image'),'images'); 
+                }
+             if($request->hasFile('file') and $request->file('file')->isValid()){
+                    if($product->file !=null){
+                        $this->deleteImage($product->file);
+                    }
+                    $product->file = $this->storeImage($request->file('file'),'files'); 
+                }
           
             $product->save();
             return new ProductResource($product);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Product $product)
     {
-          $product->delete();
+        if($product->image !=null){
+                $this->deleteImage($product->image);
+            }
+        if($product->file !=null){
+                $this->deleteImage($product->file);
+            }
+        $product->delete();
 
-            return response()->json(null, 204);
+        return response()->json(null, 204);
     }
 }

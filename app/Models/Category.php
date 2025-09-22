@@ -21,4 +21,12 @@ class Category extends Model
         
        return  $this->hasMany(Subcategory::class);
     }
+      protected static function booted()
+    {
+        static::deleting(function ($category) {
+            foreach ($category->subcategories as $subcategory) {
+                $subcategory->delete(); // will cascade to products
+            }
+        });
+    }
 }

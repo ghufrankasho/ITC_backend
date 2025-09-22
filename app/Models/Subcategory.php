@@ -27,4 +27,13 @@ class Subcategory extends Model
 
         return $this->hasMany(Product::class,'subcategory_id','id');
     }
+     protected static function booted()
+    {
+        static::deleting(function ($subcategory) {
+            // delete related products (this will trigger Product::deleting)
+            foreach ($subcategory->products as $product) {
+                $product->delete();
+            }
+        });
+    }
 }
