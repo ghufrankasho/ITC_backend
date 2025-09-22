@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->id();
             $table->string('title')->default('');
-            $table->string('seo_title')->default('');
+            $table->string('seo_title')->default('')->nullable();
             $table->string('image')->default('')->nullable();
             $table->boolean('hide')->default(false)->nullable();
             $table->string('description')->default('');

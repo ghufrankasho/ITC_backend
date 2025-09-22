@@ -29,3 +29,7 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
     Route::apiResource('contacts', ContactController::class);
     
 });
+
+//user api's
+
+Route::post('contacts',[ContactController::class,'store']);

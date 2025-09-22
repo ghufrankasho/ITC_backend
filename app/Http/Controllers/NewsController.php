@@ -47,7 +47,7 @@ class NewsController extends Controller
      
             $News = News::create($validated->validated());  
             if($request->hasFile('image') and $request->file('image')->isValid()){
-                $News->image = $this->storeImage($request->file('image'),'images'); 
+                $News->image = $this->storeImage($request->file('image'),'images/news'); 
             }
            
           
@@ -92,7 +92,7 @@ class NewsController extends Controller
      
             $News->update($validated->validated());  
             if($request->hasFile('image') and $request->file('image')->isValid()){
-                $News->image = $this->storeImage($request->file('image'),'images'); 
+                $News->image = $this->storeImage($request->file('image'),'images/news'); 
             }
             
             $News->save();
@@ -101,8 +101,9 @@ class NewsController extends Controller
 
     public function destroy(News $News)
     {
-          $News->delete();
+        $this->deleteImage($News->image);
+        $News->delete();
 
-            return response()->json(null, 204);
+        return response()->json(null, 204);
     }
 }
