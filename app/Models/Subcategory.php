@@ -10,6 +10,7 @@ class Subcategory extends Model
         'name',
         'seo_name',
         'description',
+        'hide',
         'seo_description',
         'category_id'
     ];

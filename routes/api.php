@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubcategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,5 +22,6 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
 
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('subcategories', SubcategoryController::class);
+    Route::apiResource('products', ProductController::class);
     
 });

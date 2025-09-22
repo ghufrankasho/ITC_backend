@@ -10,6 +10,7 @@ class Contact extends Model
         'name',
         'seo_name',
         'message',
+        'description',
         'email'
     ];
     

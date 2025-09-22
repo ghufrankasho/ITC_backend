@@ -33,8 +33,10 @@ class CategoryController extends Controller
         {
         
             $validated =Validator::make($request->all(), 
-            [ 'name' => 'required|string|max:255',
+            [ 
+                'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
+                'hide'=>'bool',
                 'seo_name' => 'nullable|string|max:255',
                 'seo_description' => 'nullable|string',
             ]);
@@ -67,7 +69,9 @@ class CategoryController extends Controller
         {
         
             $validated =Validator::make($request->all(), 
-                [ 'name' => 'sometimes|string|max:255',
+                [  
+                    'name' => 'sometimes|string|max:255',
+                    'hide'=>'bool',
                     'description' => 'nullable|string',
                     'seo_name' => 'nullable|string|max:255',
                     'seo_description' => 'nullable|string',

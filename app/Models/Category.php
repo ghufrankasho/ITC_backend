@@ -11,6 +11,7 @@ class Category extends Model
         'name',
         'seo_name',
         'description',
+        'hide',
         'seo_description'
     ];
     

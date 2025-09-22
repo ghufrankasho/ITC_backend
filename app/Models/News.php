@@ -9,7 +9,8 @@ class News extends Model
         protected $fillable=[
         'image',
         'seo_title',
-        'describtion',
+        'hide',
+        'description',
         'title'
     ];
     

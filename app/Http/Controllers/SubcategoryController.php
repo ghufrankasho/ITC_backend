@@ -15,7 +15,14 @@ class SubcategoryController extends Controller
      */
     public function index()
     {
-        //
+       try{
+            return SubcategoryResource::collection(Subcategory::all());
+        }
+        catch (ValidationException $e) {
+              return response()->json(['errors' => $e->errors()], 422);
+          } catch (\Exception $e) {
+              return response()->json(['message' => 'An error occurred while obtaining this categroy.'], 500);
+          } 
     }
 
   
@@ -32,6 +39,7 @@ class SubcategoryController extends Controller
                 'description' => 'nullable|string',
                 'seo_name' => 'nullable|string|max:255',
                 'seo_description' => 'nullable|string',
+                'hide'=>'bool',
                 'category_id'=>'required|integer|exists:categories,id'
             ]);
             if ($validated->fails()) {
@@ -61,14 +69,6 @@ class SubcategoryController extends Controller
      /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-        {
-            //
-        }
-
-     /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Subcategory $subcategory)
         {
         
@@ -78,6 +78,7 @@ class SubcategoryController extends Controller
                     'description' => 'nullable|string',
                     'seo_name' => 'nullable|string|max:255',
                     'seo_description' => 'nullable|string',
+                    'hide'=>'bool',
                     'category_id'=>'sometimes|integer|exists:categories,id'
                 ]);
                 if ($validated->fails()) {

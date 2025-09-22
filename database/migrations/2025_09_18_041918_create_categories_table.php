@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->default('product name')->nullable();
             $table->string('description')->default('product description')->nullable();
-          
+            $table->boolean('hide')->default(false)->nullable();
             $table->string('seo_name')->default('product seo_name')->nullable();
             $table->string('seo_description')->default('product description')->nullable();
             

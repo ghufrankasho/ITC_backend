@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->default('product name')->nullable();
-            $table->string('describtion')->default('product description')->nullable();
-            $table->string('image')->default('product image')->nullable();
-            $table->string('file')->default('product file')->nullable();
-           
+            $table->string('description')->default('product description')->nullable();
+            $table->string('image')->default(null)->nullable();
+            $table->string('file')->default(null)->nullable();
+            $table->boolean('hide')->default(false)->nullable();
             $table->string('seo_name')->default('product seo_name')->nullable();
             $table->string('seo_description')->default('product description')->nullable();
             
