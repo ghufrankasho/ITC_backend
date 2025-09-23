@@ -13,14 +13,22 @@ class ProductController extends Controller
     
     public function index()
     {
-      try{
-            return ProductResource::collection(Product::all());
+       try {
+        // Get only non-deleted products (default)
+        $products = Product::all();
+
+        // OR include deleted:
+        // $products = Product::withTrashed()->get();
+
+        // OR only deleted:
+        // $products = Product::onlyTrashed()->get();
+
+        return ProductResource::collection($products);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred while obtaining this data.'], 500);
         }
-        catch (ValidationException $e) {
-              return response()->json(['errors' => $e->errors()], 422);
-          } catch (\Exception $e) {
-              return response()->json(['message' => 'An error occurred while obtaining this data.'], 500);
-          } 
     }
  
     public function store(Request $request)

@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Subcategory extends Model
 {
+     use SoftDeletes;
     protected $fillable=[
         'name',
         'seo_name',
@@ -27,13 +28,13 @@ class Subcategory extends Model
 
         return $this->hasMany(Product::class,'subcategory_id','id');
     }
-     protected static function booted()
+    // app/Models/Subcategory.php
+    protected static function booted()
     {
         static::deleting(function ($subcategory) {
-            // delete related products (this will trigger Product::deleting)
-            foreach ($subcategory->products as $product) {
-                $product->delete();
-            }
+            $subcategory->products()->each(function ($product) {
+                $product->delete(); // soft delete product
+            });
         });
     }
 }

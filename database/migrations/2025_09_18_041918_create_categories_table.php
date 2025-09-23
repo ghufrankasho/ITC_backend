@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->softDeletes();
             $table->string('name')->default('product name')->nullable();
             $table->string('description')->default('product description')->nullable();
             $table->boolean('hide')->default(false)->nullable();
