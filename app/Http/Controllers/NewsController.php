@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 class NewsController extends Controller
 {
-     public function index()
+    public function index()
     {
       try{
             return NewsResource::collection(News::all());

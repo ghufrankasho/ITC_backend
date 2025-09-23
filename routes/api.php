@@ -6,7 +6,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubcategoryController;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Route;
 
  
@@ -27,6 +29,7 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
     Route::apiResource('products', ProductController::class);
     Route::apiResource('news', NewsController::class);
     Route::apiResource('contacts', ContactController::class);
+    Route::apiResource('settings', SettingController::class);
     
 });
 

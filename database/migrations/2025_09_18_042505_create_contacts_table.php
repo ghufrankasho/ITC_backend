@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->default('user name')->nullable();
             $table->string('description')->default('user description')->nullable();
             $table->string('email')->default('')->nullable();
+            $table->string('phone')->default('')->nullable();
             $table->string('message')->default('')->nullable();
            
             $table->timestamps();

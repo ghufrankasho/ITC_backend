@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-             $table->string('group')->default('footer'); // footer, seo, header, etc.
+            $table->string('group')->default('footer'); // footer, seo, header, etc.
             $table->string('key');
             $table->text('value')->nullable();
-        
+            $table->boolean('hide')->default(false);
 
             $table->unique(['group', 'key']); // prevent duplicates in same group
             $table->timestamps();
