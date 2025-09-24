@@ -34,7 +34,13 @@ class Subcategory extends Model
         static::deleting(function ($subcategory) {
             if ($subcategory->isForceDeleting()) {
                 // hard delete products
-                $subcategory->products()->withTrashed()->forceDelete();
+               
+                 $products = $subcategory->products()->withTrashed()->get();
+                // Force-delete each product so Product::deleting runs
+                foreach ($products as $product) {
+                    $product->forceDelete();
+                }
+            $subcategory->products()->withTrashed()->forceDelete();
             } else {
                 // soft delete
                 $subcategory->products()->delete();

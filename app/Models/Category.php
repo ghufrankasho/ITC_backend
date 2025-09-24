@@ -28,7 +28,7 @@ class Category extends Model
         if ($category->isForceDeleting()) {
             
             // hard delete subcategories & products
-            $category->subcategories()->withTrashed()->get()->forceDelete();
+            $category->subcategories()->withTrashed()->forceDelete();
         } else {
             // soft delete
             $category->subcategories()->delete();

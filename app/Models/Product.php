@@ -51,20 +51,28 @@ class Product extends Model
         }
     }
    
-    
-    protected static function booted()
+     protected static function booted()
     {
         static::deleting(function ($product) {
-            // Only when force deleting
             if ($product->isForceDeleting()) {
-                if ($product->image) {
-                    $product->deleteImage($product->image);
-                }
-                if ($product->file) {
-                    $product->deleteImage($product->file);
-                }
-            }
+                // hard delete products
+                 if($product->image !== null){
+                        
+                        $product->deleteImage($product->image);
+                    }
+                    if($product->file !== null){
+                        
+                        $product->deleteImage($product->file);
+                    }
+                 
+            } 
+        });
+
+        static::restoring(function ($product) {
+            $product->withTrashed()->restore();
         });
     }
+    
+    
   
 }

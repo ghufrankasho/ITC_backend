@@ -35,6 +35,8 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
     Route::get('subcategories/restore/{id}',[ SubcategoryController::class,'restore']);  
     Route::get('categories/deletePermanent/{id}',[ CategoryController::class,'deletePermanent']);
     Route::get('subcategories/deletePermanent/{id}',[ SubcategoryController::class,'deletePermanent']);    
+    Route::get('products/deletePermanent/{id}',[ ProductController::class,'deletePermanent']);    
+    Route::get('products/restore/{id}',[ ProductController::class,'restore']);    
     
 });
 

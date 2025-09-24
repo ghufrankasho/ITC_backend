@@ -130,4 +130,33 @@ class ProductController extends Controller
 
         return response()->json(null, 204);
     }
+    public function restore($id)
+        {
+            try {
+                
+                $product = product::withTrashed()->find($id);
+                $product->restore(); // triggers cascade restore (products)
+
+                return new productResource($product);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Error restoring product',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        }
+    public function deletePermanent($id){
+        try {
+            
+                $product = product::withTrashed()->find($id);
+                $product->forceDelete(); // triggers cascade restore (products)
+ 
+                return response()->json(null, 204);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Error delete permanent  product',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+    }
 }
