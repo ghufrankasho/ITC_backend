@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('hide')->default(false)->nullable();
             $table->string('seo_name')->default('product seo_name')->nullable();
             $table->string('seo_description')->default('product description')->nullable();
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained();
             $table->timestamps();
         });
     }

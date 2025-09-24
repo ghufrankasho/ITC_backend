@@ -87,4 +87,42 @@ class CategoryController extends Controller
 
             return new CategoryResource($category);
         }
-}
+
+    public function restore($id)
+        {
+            try {
+                $category = Category::withTrashed()->find($id);
+                $category->restore(); // this triggers cascade restore
+
+                return new CategoryResource($category);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Error restoring category',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        }
+
+    public function deletePermanent($id)
+        {
+            try {
+                    
+                    $category = Category::withTrashed()->find($id);
+                    $category->forceDelete(); // triggers cascade restore (products)
+    
+                    return response()->json(null, 204);
+            } 
+            catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'Error restoring Category',
+                        'error' => $e->getMessage()
+                    ], 500);
+            }
+        }
+
+
+
+        
+
+  
+    }

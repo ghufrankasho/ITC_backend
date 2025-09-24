@@ -11,7 +11,8 @@ class Contact extends Model
         'seo_name',
         'message',
         'description',
-        'email'
+        'email',
+        'phone'
     ];
     
     public $timestamps=true;

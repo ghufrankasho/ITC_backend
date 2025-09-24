@@ -25,9 +25,19 @@ class Category extends Model
     protected static function booted()
     {
         static::deleting(function ($category) {
-            $category->subcategories()->each(function ($subcategory) {
-                $subcategory->delete(); // soft delete subcategory
-            });
+        if ($category->isForceDeleting()) {
+            
+            // hard delete subcategories & products
+            $category->subcategories()->withTrashed()->get()->forceDelete();
+        } else {
+            // soft delete
+            $category->subcategories()->delete();
+        }
+    });
+            static::restoring(function ($category) {
+            // restore subcategories
+            $category->subcategories()->withTrashed()->restore();
+    
         });
 }
 }

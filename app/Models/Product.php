@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 class Product extends Model
 {
      use SoftDeletes;
@@ -54,14 +55,14 @@ class Product extends Model
     protected static function booted()
     {
         static::deleting(function ($product) {
-            // Delete product image if exists
-            if ($product->image!==null) {
-               $product->deleteImage($product->image);
-            }
-
-            // If product has another file (example: pdf)
-            if ($product->file!==null ) {
-                $product->deleteImage($product->file);
+            // Only when force deleting
+            if ($product->isForceDeleting()) {
+                if ($product->image) {
+                    $product->deleteImage($product->image);
+                }
+                if ($product->file) {
+                    $product->deleteImage($product->file);
+                }
             }
         });
     }

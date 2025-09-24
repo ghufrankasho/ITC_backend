@@ -28,6 +28,7 @@ class NewsController extends Controller
             [ 
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
+                
                 'seo_title' => 'nullable|string|max:255',
                 'image' => 'sometimes|file|required|mimetypes:image/jpeg,image/png,image/gif,image/svg+xml,image/webp,application/wbmp',
                 'hide'=>'bool',

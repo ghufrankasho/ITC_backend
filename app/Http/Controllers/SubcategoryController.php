@@ -106,4 +106,40 @@ class SubcategoryController extends Controller
 
             return response()->json(null, 204);
         }
+    public function restore($id)
+        {
+            try {
+                
+                $subcategory = Subcategory::withTrashed()->find($id);
+                $subcategory->restore(); // triggers cascade restore (products)
+
+                return new SubcategoryResource($subcategory);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Error restoring subcategory',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        }
+    public function deletePermanent($id){
+        try {
+            
+                $subcategory = Subcategory::withTrashed()->find($id);
+                $subcategory->forceDelete(); // triggers cascade restore (products)
+ 
+                return response()->json(null, 204);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Error delete permanent  subcategory',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+    }
+
+
+
+        
+
+
+
 }

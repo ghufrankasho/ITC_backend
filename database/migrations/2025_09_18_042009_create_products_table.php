@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('seo_name')->default('product seo_name')->nullable();
             $table->string('seo_description')->default('product description')->nullable();
             $table->softDeletes();
-            $table->foreignId('subcategory_id')->constrained()->on('subcategories')->cascadeOnDelete();
+            $table->foreignId('subcategory_id')->constrained()->on('subcategories');
             $table->timestamps();
         });
     }

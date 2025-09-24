@@ -32,9 +32,17 @@ class Subcategory extends Model
     protected static function booted()
     {
         static::deleting(function ($subcategory) {
-            $subcategory->products()->each(function ($product) {
-                $product->delete(); // soft delete product
-            });
+            if ($subcategory->isForceDeleting()) {
+                // hard delete products
+                $subcategory->products()->withTrashed()->forceDelete();
+            } else {
+                // soft delete
+                $subcategory->products()->delete();
+            }
+        });
+
+        static::restoring(function ($subcategory) {
+            $subcategory->products()->withTrashed()->restore();
         });
     }
 }

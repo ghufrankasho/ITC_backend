@@ -31,6 +31,11 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
     Route::apiResource('contacts', ContactController::class);
     Route::apiResource('settings', SettingController::class);
     
+    Route::get('categories/restore/{id}',[ CategoryController::class,'restore']);
+    Route::get('subcategories/restore/{id}',[ SubcategoryController::class,'restore']);  
+    Route::get('categories/deletePermanent/{id}',[ CategoryController::class,'deletePermanent']);
+    Route::get('subcategories/deletePermanent/{id}',[ SubcategoryController::class,'deletePermanent']);    
+    
 });
 
 //user api's

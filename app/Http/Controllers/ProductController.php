@@ -125,12 +125,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if($product->image !=null){
-                $this->deleteImage($product->image);
-            }
-        if($product->file !=null){
-                $this->deleteImage($product->file);
-            }
+         
         $product->delete();
 
         return response()->json(null, 204);
