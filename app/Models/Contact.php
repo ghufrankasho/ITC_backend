@@ -12,7 +12,8 @@ class Contact extends Model
         'message',
         'description',
         'email',
-        'phone'
+        'phone',
+        'hide'
     ];
     
     public $timestamps=true;

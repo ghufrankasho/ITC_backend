@@ -30,7 +30,7 @@ class SettingController extends Controller
                 'value' => 'nullable|string',
                 'group' => 'required|string|max:255',
                 'image' => 'sometimes|file|required|mimetypes:image/jpeg,image/png,image/gif,image/svg+xml,image/webp,application/wbmp',
-                'hide'=>'bool',
+                'hide'=>'boolean',
                 
             ]);
             $validated->sometimes('image', 'required|mimetypes:image/vnd.wap.wbmp', function ($input) {
@@ -48,10 +48,11 @@ class SettingController extends Controller
             $Setting = Setting::create($validated->validated());  
             if($request->hasFile('image') and $request->file('image')->isValid()){
                 $Setting->value = $this->storeImage($request->file('image'),'images/sliders'); 
+                $Setting->save();
             }
            
           
-            $Setting->save();
+           
             return new SettingResource($Setting);
     }
 
@@ -88,9 +89,9 @@ class SettingController extends Controller
             [ 
                 'key' => 'sometimes|string|max:255',
                 'value' => 'nullable|string',
-                'group' => 'required|string|max:255',
+                'group' => 'sometimes|string|max:255',
                 'image' => 'sometimes|file|required|mimetypes:image/jpeg,image/png,image/gif,image/svg+xml,image/webp,application/wbmp',
-                'hide'=>'bool',
+                'hide'=>'boolean',
              ]);
             $validated->sometimes('image', 'required|mimetypes:image/vnd.wap.wbmp', function ($input) {
                 return $input->file('image') !== null && $input->file('image')->getClientOriginalExtension() === 'wbmp';
@@ -108,9 +109,10 @@ class SettingController extends Controller
             if($request->hasFile('image') and $request->file('image')->isValid()){
                 $this->deleteImage($Setting->value);
                 $Setting->value = $this->storeImage($request->file('image'),'images/sliders'); 
+                $Setting->save();
             }
             
-            $Setting->save();
+           
             return new SettingResource($Setting);
     }
 

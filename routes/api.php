@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
@@ -43,3 +44,4 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
 //user api's
 
 Route::post('contacts',[ContactController::class,'store']);
+Route::get('home',[HomeController::class,'index']);

@@ -14,6 +14,11 @@ class HomeController extends Controller
 {
     public function index(){
 
-        
+        $sliders=Setting::where([['hide',0],['group','slider']])->get();
+        $categories=Category::where('hide',0)->with('subcategories')->get();
+        return [
+            'sliders'=>$sliders,
+            'categories'=>$categories,
+        ];
     }
 }

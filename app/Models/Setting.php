@@ -10,6 +10,7 @@ class Setting extends Model
         'key',
         'group',
         'value',
+        'hide'
         
     ];
     
