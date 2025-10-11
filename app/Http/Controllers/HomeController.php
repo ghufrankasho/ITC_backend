@@ -17,6 +17,7 @@ class HomeController extends Controller
         $sliders=Setting::where([['hide',0],['group','slider']])->get();
         $categories=Category::where('hide',0)->with('subcategories')->get();
         return [
+            'products'=>["data"],
             'sliders'=>$sliders,
             'categories'=>$categories,
         ];
