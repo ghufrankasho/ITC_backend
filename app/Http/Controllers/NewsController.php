@@ -56,10 +56,10 @@ class NewsController extends Controller
             return new NewsResource($News);
     }
 
-    public function show(News $News)
+    public function show(News $news)
     {
         try{
-            return new NewsResource($News);
+            return new NewsResource($news);
         }
         catch (ValidationException $e) {
               return response()->json(['errors' => $e->errors()], 422);

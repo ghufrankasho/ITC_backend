@@ -45,3 +45,6 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
 
 Route::post('contacts',[ContactController::class,'store']);
 Route::get('home',[HomeController::class,'index']);
+Route::get('data',[HomeController::class,'get']);
+Route::get('products/{product}',[ProductController::class,'show']);
+Route::get('news/{news}',[NewsController::class,'show']);
