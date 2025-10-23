@@ -19,16 +19,27 @@ class HomeController extends Controller
         $categories=Category::where('hide',0)->with('subcategories')->latest()->get();
         $products=Product::where('hide',0) ->latest()->take(6)->get();
         $news=News::where('hide',0)->latest()->get();
-        $settings=Setting::where([['hide',0],['group','footer']])->latest()->get();
+        // $footer=Setting::where([['hide',0],['group','footer']])->latest()->get();
         return [
             'products'=> $products,
             'sliders'=>$sliders,
             'categories'=>$categories,
             'news'=>$news,
-            'settings'=>$settings,
+            // 'footer'=>$footer,
         ];
     }
-
+    public function footer(){
+        try{
+            $footer=Setting::where([['hide',0],['group','footer']])->latest()->get();
+            return  $footer;
+        }
+        catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+          } catch (\Exception $e) {
+            return response()->json(['message'=>'An error occurred while requesting data.'], 500);
+          }
+    }
+            
     public function get(Request $request){
         try{
 
@@ -39,7 +50,7 @@ class HomeController extends Controller
            
             if($request->filled('page')){
                  
-                  $page=$request->page;
+                $page=$request->page;
             }
             if($request->filled('limit')){
                 $limit=$request->limit;
@@ -48,6 +59,10 @@ class HomeController extends Controller
             if($request->filled('type')){
                 $type=$request->type;
                   
+            }
+            if($request->has('search')){
+               
+                return $this->search($request);
             }
             
             if($page <=1){
@@ -90,7 +105,8 @@ class HomeController extends Controller
           }
         
     }
-    public function search(Request $request){
+    
+    private function search(Request $request){
         try {
         
            

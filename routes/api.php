@@ -47,7 +47,7 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
 Route::post('contacts',[ContactController::class,'store']);
 Route::get('home',[HomeController::class,'index']);
 Route::get('data',[HomeController::class,'get']);
-Route::get('search',[HomeController::class,'search']);
+Route::get('footer',[HomeController::class,'footer']);
 Route::get('products/{product}',[ProductController::class,'show']);
 Route::get('subcategories/{subcategory}',[SubcategoryController::class,'show']);
  
