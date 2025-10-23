@@ -39,6 +39,17 @@ class HomeController extends Controller
             return response()->json(['message'=>'An error occurred while requesting data.'], 500);
           }
     }
+      public function categories(){
+        try{
+            $categories=Category::where('hide',0)->with('subcategories')->latest()->get();
+            return  $categories;
+        }
+        catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+          } catch (\Exception $e) {
+            return response()->json(['message'=>'An error occurred while requesting data.'], 500);
+          }
+    }
             
     public function get(Request $request){
         try{
