@@ -63,7 +63,8 @@ class SubcategoryController extends Controller
      */
     public function show(Subcategory $subcategory)
         {
-            return new SubcategoryResource($subcategory);
+            $sub_category= Subcategory::where('id',$subcategory->id)->with('products')->get();
+            return   $sub_category;
         }
 
      /**

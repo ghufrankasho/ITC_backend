@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubcategoryController;
 use App\Models\Setting;
+use App\Models\Subcategory;
 use Illuminate\Support\Facades\Route;
 
  
@@ -46,5 +47,7 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
 Route::post('contacts',[ContactController::class,'store']);
 Route::get('home',[HomeController::class,'index']);
 Route::get('data',[HomeController::class,'get']);
+Route::get('search',[HomeController::class,'search']);
 Route::get('products/{product}',[ProductController::class,'show']);
-Route::get('news/{news}',[NewsController::class,'show']);
+Route::get('subcategories/{subcategory}',[SubcategoryController::class,'show']);
+ 

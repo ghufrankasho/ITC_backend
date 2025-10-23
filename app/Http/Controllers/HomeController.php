@@ -90,5 +90,80 @@ class HomeController extends Controller
           }
         
     }
+    public function search(Request $request){
+        try {
+        
+           
+            $page=1;
+            $limit=4;
+            $value=0;
+            
+            if($request->filled('page')){
+               
+                  $page=$request->page;
+                }
+            if($request->filled('limit')){
+                  $limit=$request->limit;
+                  
+                }
+            if($request->filled('search')){
+                    $search=$request->search;
+                    
+                }
+            if($page >1){$value=($page-1)*$limit;}
+                 
+            $validatesearch = Validator::make($request->all(), 
+                [ 'search' => 'required|string|min:3' ]); 
+                
+            if($validatesearch->fails())
+            {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation Error',
+                    'errors' => $validatesearch->errors()
+                ], 422);
+            }
+            // Find matching categories
+            $categoryIds = Category::where('name', 'like', "%{$request->search}%")->pluck('id');
+
+            // Find matching subcategories
+            $subcategoryIds = Subcategory::where('name', 'like', "%{$request->search}%")->pluck('id');
+
+            // Find products directly matching the name or related to matched categories/subcategories
+             // Base query for products
+            $query = Product::where('name', 'like', "%{$search}%")
+            ->orWhereIn('subcategory_id', $subcategoryIds)
+            ->orWhereHas('subcategory', function ($q) use ($categoryIds) {
+                $q->whereIn('category_id', $categoryIds);
+            })
+            ->with(['subcategory.category']);
+            
+                    // Get total count before pagination
+            $total = $query->count();
+
+            // Apply pagination manually
+            $products = $query->skip(($page - 1) * $limit)->take($limit)->get();
+
+            // Response
+            return response()->json([
+                'status' => true,
+                'message' => 'Search results fetched successfully.',
+                'total' => $total,
+                'page' => (int)$page,
+                'limit' => (int)$limit,
+                'count' => $products->count(),
+                'products' => $products
+            ]);
+                        
+            }
+            catch (ValidationException $e) {
+                return response()->json(['errors' => $e->errors()], 422);
+            } 
+            catch (\Exception $e) {
+                return response()->json(['message' =>$e,
+                'An error  occurred while requesting this Product.'], 500);
+            }
+
+    }
    
 }
