@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
  
 
 Route::controller(AuthController::class)->prefix('admin')->group(function () {
-    Route::post('register', 'register');
+    //Route::post('register', 'register');
     Route::post('login', 'login');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
@@ -53,10 +53,8 @@ Route::get('data',[HomeController::class,'get']);
 Route::get('footer',[HomeController::class,'footer']);
 Route::get('categories',[HomeController::class,'categories']);
 
-
-
-
+Route::get('related',[HomeController::class,'suggest']);
 
 Route::get('products/{product}',[ProductController::class,'show']);
 Route::get('subcategories/{subcategory}',[SubcategoryController::class,'show']);
- 
+Route::get('news/{news}',[NewsController::class,'show']); 

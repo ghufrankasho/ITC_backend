@@ -9,6 +9,7 @@ class Setting extends Model
         protected $fillable=[
         'key',
         'group',
+        'image',
         'value',
         'hide'
         

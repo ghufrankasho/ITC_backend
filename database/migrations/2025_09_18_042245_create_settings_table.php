@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('key');
             $table->text('value')->nullable();
             $table->boolean('hide')->default(false);
-
+            $table->string('image')->default(null)->nullable();
             $table->unique(['group', 'key']); // prevent duplicates in same group
             $table->timestamps();
         });

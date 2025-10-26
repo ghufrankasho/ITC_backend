@@ -12,14 +12,14 @@ class SettingController extends Controller
 {
    public function index()
     {
-      try{
-            return SettingResource::collection(Setting::all());
-        }
+        try{
+                return SettingResource::collection(Setting::all());
+            }
         catch (ValidationException $e) {
               return response()->json(['errors' => $e->errors()], 422);
-          } catch (\Exception $e) {
+            } catch (\Exception $e) {
               return response()->json(['message' => 'An error occurred while obtaining this data.'], 500);
-          } 
+        } 
     }
  
     public function store(Request $request)
@@ -47,7 +47,7 @@ class SettingController extends Controller
      
             $Setting = Setting::create($validated->validated());  
             if($request->hasFile('image') and $request->file('image')->isValid()){
-                $Setting->value = $this->storeImage($request->file('image'),'images/sliders'); 
+                $Setting->image = $this->storeImage($request->file('image'),'images/sliders'); 
                 $Setting->save();
             }
            
@@ -107,8 +107,8 @@ class SettingController extends Controller
      
             $Setting->update($validated->validated());  
             if($request->hasFile('image') and $request->file('image')->isValid()){
-                $this->deleteImage($Setting->value);
-                $Setting->value = $this->storeImage($request->file('image'),'images/sliders'); 
+                $this->deleteImage($Setting->image);
+                $Setting->image = $this->storeImage($request->file('image'),'images/sliders'); 
                 $Setting->save();
             }
             
@@ -118,8 +118,8 @@ class SettingController extends Controller
 
     public function destroy (Setting $setting)
     {
-        if($setting->group==='slider' and $setting->value!==null){
-            $this->deleteImage($setting->value);
+        if($setting->image!==null){
+            $this->deleteImage($setting->image);
         }
         
         $setting->delete();

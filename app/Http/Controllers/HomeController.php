@@ -31,7 +31,13 @@ class HomeController extends Controller
     public function footer(){
         try{
             $footer=Setting::where([['hide',0],['group','footer']])->latest()->get();
-            return  $footer;
+            
+            return response()->json(
+            [
+                'data'=>$footer
+            ],
+            200
+            );
         }
         catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
@@ -39,10 +45,15 @@ class HomeController extends Controller
             return response()->json(['message'=>'An error occurred while requesting data.'], 500);
           }
     }
-      public function categories(){
+    public function categories(){
         try{
             $categories=Category::where('hide',0)->with('subcategories')->latest()->get();
-            return  $categories;
+            return response()->json(
+            [
+                'data'=>$categories
+            ],
+            200
+            );
         }
         catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
@@ -101,9 +112,14 @@ class HomeController extends Controller
             }
             
             return response()->json(
-                           ['result'=>$data,
-                           'total'=>$number]
-                            , 200);
+                        [
+                        'page' => (int)$page,
+                        'limit' => (int)$limit,
+                        'count' => $data->count(),
+                        'data'=>$data,
+                        'total'=>$number
+                        ]
+                        , 200);
           
            }
             
@@ -173,14 +189,13 @@ class HomeController extends Controller
 
             // Response
             return response()->json([
-                'status' => true,
-                'message' => 'Search results fetched successfully.',
+             
                 'total' => $total,
                 'page' => (int)$page,
                 'limit' => (int)$limit,
                 'count' => $products->count(),
-                'products' => $products
-            ]);
+                'data' => $products
+            ],200);
                         
             }
             catch (ValidationException $e) {
@@ -191,6 +206,65 @@ class HomeController extends Controller
                 'An error  occurred while requesting this Product.'], 500);
             }
 
+    }
+
+    public function suggest(Request $request){
+        
+       $type=1;
+      
+       
+        if($request->filled('type')){
+            $type=$request->type;
+           }
+         
+        if($request->filled('limit')){
+            $limit=$request->limit;
+            
+           }
+            
+        if($type==0)
+        {
+             #setp 1 ::get adverts with highest counter
+            $data=News::where('hide',0)->latest()->take( $limit)->get();
+            
+             return response()->json(
+            [
+                'data'=>$data
+            ],
+            200
+            );
+        }
+        else{
+            
+            $input = [ 'subcategory_id' =>$request->subcategory_id ];
+            $validate = Validator::make( $input,
+                ['subcategory_id'=>'required|integer|exists:subcategories,id']);
+                
+            if($validate->fails()){
+                return response()->json([
+                    'status' => false,
+                'message' => 'validation error',
+                    'errors' => $validate->errors()
+                ], 422);
+            }
+            
+            $subcategory=Subcategory::find($request->subcategory_id);
+            $products= $subcategory->products()->latest()->take( $limit)->get();
+            
+            return response()->json(
+            [
+                'data'=>$products
+            ],
+            200
+            );
+            
+            
+            
+            
+            
+        }
+       
+         
     }
    
 }

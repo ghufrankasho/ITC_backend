@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('seo_title')->default('')->nullable();
             $table->string('image')->default('')->nullable();
             $table->boolean('hide')->default(false)->nullable();
-            $table->string('description')->default('');
+            $table->longText('description')->default('');
             $table->timestamps();
         });
     }

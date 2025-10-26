@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name')->default('product name')->nullable();
-            $table->string('description')->default('product description')->nullable();
+            $table->longText('description')->default('product description')->nullable();
             $table->string('image')->default(null)->nullable();
             $table->string('file')->default(null)->nullable();
             $table->boolean('hide')->default(false)->nullable();
