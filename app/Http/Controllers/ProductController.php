@@ -30,7 +30,7 @@ class ProductController extends Controller
             return response()->json(['message' => 'An error occurred while obtaining this data.'], 500);
         }
     }
- 
+    
     public function store(Request $request)
     {
             $validated =Validator::make($request->all(), 
@@ -82,6 +82,7 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+         
         $validated =Validator::make($request->all(), 
             [ 
                 'name' => 'sometimes|string|max:255',
