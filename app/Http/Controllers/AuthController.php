@@ -14,32 +14,32 @@ class AuthController extends Controller
 
     
     // Register
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|unique:users,email',
-            'password' => 'required|string|confirmed|min:6',
-        ]);
+    // public function register(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name'     => 'required|string|max:255',
+    //         'email'    => 'required|string|email|unique:users,email',
+    //         'password' => 'required|string|confirmed|min:6',
+    //     ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Validation error',
-                'errors'  => $validator->errors()
-            ], 422);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status'  => false,
+    //             'message' => 'Validation error',
+    //             'errors'  => $validator->errors()
+    //         ], 422);
+    //     }
 
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+    //     $user = User::create([
+    //         'name'     => $request->name,
+    //         'email'    => $request->email,
+    //         'password' => bcrypt($request->password),
+    //     ]);
 
-        $token = JWTAuth::fromUser($user); // Create token from new user
+    //     $token = JWTAuth::fromUser($user); // Create token from new user
 
-        return $this->createNewToken($token, $user);
-    }
+    //     return $this->createNewToken($token, $user);
+    // }
 
     // Login
     public function login(Request $request)
