@@ -21,7 +21,7 @@ class SubcategoryController extends Controller
         catch (ValidationException $e) {
               return response()->json(['errors' => $e->errors()], 422);
           } catch (\Exception $e) {
-              return response()->json(['message' => 'An error occurred while obtaining this categroy.'], 500);
+              return response()->json(['message' => 'An error occurred while obtaining this subcategroy.'], 500);
           } 
     }
 

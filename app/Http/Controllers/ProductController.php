@@ -132,7 +132,7 @@ class ProductController extends Controller
         return response()->json(null, 204);
     }
     public function restore($id)
-        {
+    {
             try {
                 
                 $product = product::withTrashed()->find($id);
@@ -145,7 +145,7 @@ class ProductController extends Controller
                     'error' => $e->getMessage()
                 ], 500);
             }
-        }
+    }
     public function deletePermanent($id){
         try {
             

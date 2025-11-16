@@ -56,32 +56,57 @@ class SettingController extends Controller
             return new SettingResource($Setting);
     }
 
-    public function show(String $group)
-    {
-        try{
-             $request=['group'=>$group];
-             $validatedkey =Validator::make($request, 
-            [ 
-                'group' => 'required|string|exists:settings,group',
-                
+    public function show(string $key)
+{
+    try {
+        // Detect if the key is numeric (id) or a string (group)
+        if (is_numeric($key)) {
+            // Validate ID
+            $validated = Validator::make(['id' => $key], [
+                'id' => 'required|integer|exists:settings,id',
             ]);
-            
-            if ($validatedkey->fails()) {
+
+            if ($validated->fails()) {
                 return response()->json([
                     'status'  => false,
                     'message' => 'Validation Error',
-                    'errors'  => $validatedkey->errors()
+                    'errors'  => $validated->errors()
                 ], 422);
             }
-            $Setting=Setting::where('group',$group)->get();
-            return SettingResource::collection($Setting);
+
+            // Fetch by ID
+            $setting = Setting::find($key);
+
+            return new SettingResource($setting);
+        } else {
+            // Validate group name
+            $validated = Validator::make(['group' => $key], [
+                'group' => 'required|string|exists:settings,group',
+            ]);
+
+            if ($validated->fails()) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Validation Error',
+                    'errors'  => $validated->errors()
+                ], 422);
+            }
+
+            // Fetch all by group name
+            $settings = Setting::where('group', $key)->get();
+
+            return SettingResource::collection($settings);
         }
-        catch (ValidationException $e) {
-              return response()->json(['errors' => $e->errors()], 422);
-          } catch (\Exception $e) {
-              return response()->json(['message' => 'An error occurred while obtaining this data.'], 500);
-          } 
+    } catch (ValidationException $e) {
+        return response()->json(['errors' => $e->errors()], 422);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'An error occurred while obtaining this data.',
+            'error'   => $e->getMessage(), // Optional for debugging
+        ], 500);
     }
+}
+
 
     public function update(Request $request, Setting $Setting)
     {

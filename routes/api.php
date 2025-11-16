@@ -47,7 +47,7 @@ Route::group(['middleware'=>'auth:api','prefix'=>'admin'],function($router){
 Route::post('contacts',[ContactController::class,'store']);
 
 
-Route::get('home',[HomeController::class,'index']);
+Route::get('home',[HomeController::class,'index'])->middleware('TrackVisitors');
 Route::get('data',[HomeController::class,'get']);
 
 Route::get('footer',[HomeController::class,'footer']);
